@@ -59,7 +59,7 @@
         <div id="minicart_tax">
           <% current_order.all_adjustments.tax.eligible.group_by(&:label).each do |label, adjustments| %>
             <% unless adjustments.sum(&:amount) == 0 %>
-                <h6><%= Spree.t(:tax) %>: <%= label %> </h6>
+                <h6><%= Spree.t(:tax) %>: <%= label.gsub('.0','') %> </h6>
                 <span class="order-total"><%= Spree::Money.new(adjustments.sum(&:amount), :currency => current_order.currency) %></span>
             <% end %>
           <% end %>
