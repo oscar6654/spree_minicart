@@ -57,11 +57,25 @@ SpreeMinicart = {
             $("#progress").slideUp();
         });
     },
+    bindApplyPromoCodeClick: function(){
+        $(document).on("click", "#minicart .btn-coupon", function(e){
+            var couponCodeInput = $("#minicart .coupon-input");
+            var couponCode = couponCodeInput.val().trim();
+            if(couponCode == undefined || couponCode == ''){
+                e.preventDefault();
+                couponCodeInput.fadeOut(100).attr("placeholder", "Enter a valid promo code").fadeIn(800);
+                setTimeout(function(){
+                    couponCodeInput.fadeOut(100).attr("placeholder", "Apply a promo code").fadeIn(500);;
+                }, 1000);
+            }
+        });
+    },
     documentOnReady: function() {
         this.bindLinkToCartClick();
         this.bindCloseButtonClick();
         this.bindRemoveFromCartClick();
         this.bindUpdateLineItemsClick();
+        this.bindApplyPromoCodeClick();
         this.bindShowAjaxProgressBar();
     }
 
