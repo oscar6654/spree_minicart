@@ -1,7 +1,7 @@
 <% if current_order.line_item_adjustments.exists? %>
   <% current_order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
     <% if adjustments.sum(&:amount) != 0 %>
-		    <%= Spree.t(:tax) %>: <%= label %>
+		    <%= Spree.t(:promotion) %>: <%= label %>
 		    <span class="order-total"><%= Spree::Money.new(adjustments.sum(&:amount), currency: current_order.currency) %></span><br>
 		<% end %>
   <% end %>
@@ -21,7 +21,7 @@
 
 <% current_order.adjustments.eligible.group_by(&:label).each do |label, adjustments| %>
   <% if adjustments.sum(&:amount) != 0 %>
-	  <%= Spree.t(:tax) %>: <%= label %>
+	  <%= Spree.t(:adjustment) %>: <%= label %>
 	  <span class="order-total"><%= Spree::Money.new(adjustments.sum(&:amount), currency: current_order.currency) %></span><br>
 	<% end %>
 <% end %>
