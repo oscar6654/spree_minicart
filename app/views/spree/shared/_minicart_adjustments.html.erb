@@ -1,0 +1,27 @@
+<% if current_order.line_item_adjustments.exists? %>
+  <% current_order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
+    <% if adjustments.sum(&:amount) != 0 %>
+		    <%= Spree.t(:tax) %>: <%= label %>
+		    <span class="order-total"><%= Spree::Money.new(adjustments.sum(&:amount), currency: current_order.currency) %></span><br>
+		<% end %>
+  <% end %>
+<% end %>
+
+<% current_order.shipments.each do |shipment| %>
+  <%= Spree.t(:shipping) %>: <%= shipment.shipping_method.name %>
+  <span class="order-total"><%= shipment.display_discounted_cost %></span><br>
+<% end %>
+
+<% current_order.all_adjustments.tax.eligible.group_by(&:label).each do |label, adjustments| %>
+  <% if adjustments.sum(&:amount) != 0 %>
+    <%= Spree.t(:tax) %>: <%= label %>
+	  <span class="order-total"><%= Spree::Money.new(adjustments.sum(&:amount), currency: current_order.currency) %></span><br>
+	<% end %>
+<% end %>
+
+<% current_order.adjustments.eligible.group_by(&:label).each do |label, adjustments| %>
+  <% if adjustments.sum(&:amount) != 0 %>
+	  <%= Spree.t(:tax) %>: <%= label %>
+	  <span class="order-total"><%= Spree::Money.new(adjustments.sum(&:amount), currency: current_order.currency) %></span><br>
+	<% end %>
+<% end %>

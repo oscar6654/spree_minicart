@@ -1,27 +1,46 @@
 <% product_path = spree.product_path(variant.product) %>
 
 <li class="<%= cycle('', 'alt') %>">
+  <div class="thumb-image">
   <% if variant.images.length == 0 %>
-    <%= link_to mini_image(variant.product), product_path %>
+      <%= link_to mini_image(variant.product), product_path %>
   <% else %>
     <%= link_to image_tag(variant.images.first.attachment.url(:mini)), product_path %>
   <% end %>
-
-  <%= "#{line_item.quantity}" %> x
-  <%= link_to variant.product.name, product_path %><br>
-  <% if !variant.options_text.empty? %>
-    <%= variant.options_text %><br>
-  <% end %>
-  <%= Spree::Money.new(line_item.price * line_item.quantity, { currency: current_currency }).to_html unless line_item.quantity.nil? %>
-
-  <div class='minicart-actions' data-hook="minicart_item_actions">
-    <div data-hook="minicart_item_quantity">
-      <%= item_form.hidden_field :quantity, :min => 0, :class => "line_item_quantity" %>
+  </div>
+  <div class="item-summary">
+    <div class="product-name">
+      <%= link_to variant.product.name, product_path %>
+    </div>
+    <div class="product-note">
+      <% product_properties = variant.product.product_properties.includes(:property) %>
+	    <% unless product_properties.empty? %>
+	      <% product_properties.each do |product_property| %>
+	        <span><%= product_property.value %></span>
+	      <% end %>
+	      <% reset_cycle('properties') %>
+			<% end %>
     </div>
 
-    <div data-hook="minicart_item_delete">
-      <%= link_to image_tag('icons/delete.png'), '#', :class => 'minicart_remove', :id => "delete_#{dom_id(line_item)}" %>
+    <% if !variant.options_text.empty? %>
+      <%= variant.options_text %><br>
+    <% end %>
+    <div class="product-price">
+      <%= Spree::Money.new(line_item.price * line_item.quantity, { currency: current_currency }).to_html unless line_item.quantity.nil? %>
+    </div>
+
+    <div class='minicart-actions' data-hook="minicart_item_actions">
+      <div data-hook="minicart_item_delete">
+        <%= link_to image_tag('close.png'), '#', :class => 'minicart_remove', :id => "delete_#{dom_id(line_item)}" %>
+      </div>
+    </div>
+
+    <div data-hook="minicart_item_quantity" class="minicart_item_quantity">
+      <button class="btn-quantity decrement" type="button">-</button>
+      <span class="qty">Qty</span>
+      <span class="number"><%= "#{line_item.quantity}" %></span>
+      <%= item_form.hidden_field :quantity, :min => 0, :class => "line_item_quantity" %>
+      <button class="btn-quantity increment" type="button">+</button>
     </div>
   </div>
-
 </li>
