@@ -29,7 +29,12 @@ SpreeMinicart = {
     },
     bindUpdateLineItemsClick: function() {
 
-        var _updateCart = function(obj, operationType = "-") {
+        var _updateCart = function(obj, operationType) {
+            
+            if(operationType == undefined){
+                operationType = "-";
+            }
+
             var currentLineItemQuantity = parseInt($(obj).siblings(".number").text());
             if (currentLineItemQuantity == 0) {
                 return false;
