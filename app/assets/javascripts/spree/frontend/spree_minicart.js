@@ -82,6 +82,7 @@ SpreeMinicart = {
         this.bindUpdateLineItemsClick();
         this.bindApplyPromoCodeClick();
         this.bindShowAjaxProgressBar();
+        $.get('/update_cart');
     }
 
 };
